@@ -1,7 +1,7 @@
 package com.example.ecomerceapp
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,49 +11,80 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.ecomerceapp.ui.theme.EcomerceAppTheme
+
+@OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun LoginScreen(navcontroller: NavController) {
-    Scaffold { valuesPadding ->
+fun RegisterScreen(navcontroller: NavController) {
+
+    Scaffold(topBar = {
+
+        TopAppBar(
+            title = {},
+            navigationIcon = {
+                IconButton(onClick = { navcontroller.popBackStack() }) {
+                    Icon(
+                        Icons.Default.ArrowBack,
+                        contentDescription = null
+                    )
+                }
+            })
+    }) { innerPading ->
         Column(
             modifier = Modifier
-                .padding(valuesPadding)
+                .padding(innerPading)
                 .fillMaxSize()
                 .padding(horizontal = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(R.drawable.logounab),
-                contentDescription = "Logo Unab",
-                modifier = Modifier.size(200.dp)
+                imageVector = Icons.Default.Person,
+                contentDescription = "Register",
+                modifier = Modifier.size(150.dp)
             )
-            Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = "Iniciar Sesion",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
+                text = "Registrar Usuario",
+                fontSize = 24.sp, fontWeight = FontWeight.Bold,
                 color = Color(0xFFFF9900)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                label = { Text("Nombre Completo") }, modifier = Modifier.fillMaxWidth(),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.AccountBox,
+                        contentDescription = "Nombre Completo",
+                        tint = Color(0xFFFF9900)
+                    )
+                },
+                shape = RoundedCornerShape(12.dp)
             )
             Spacer(modifier = Modifier.height(24.dp))
             OutlinedTextField(
@@ -63,7 +94,7 @@ fun LoginScreen(navcontroller: NavController) {
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Email,
-                        contentDescription = "email",
+                        contentDescription = "Correo Electronico",
                         tint = Color(0xFFFF9900)
                     )
                 },
@@ -84,6 +115,20 @@ fun LoginScreen(navcontroller: NavController) {
                 shape = RoundedCornerShape(12.dp)
             )
             Spacer(modifier = Modifier.height(24.dp))
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                label = { Text("Confirmar Contraseña") }, modifier = Modifier.fillMaxWidth(),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = "Confirmar Contraseña",
+                        tint = Color(0xFFFF9900)
+                    )
+                },
+                shape = RoundedCornerShape(12.dp)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
             Button(
                 onClick = {},
                 colors = ButtonDefaults.buttonColors
@@ -91,31 +136,26 @@ fun LoginScreen(navcontroller: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
+
             ) {
                 Text(
-                    text = "Iniciar Sesion",
-                    fontSize = 16.sp
+                    text = "Registrarse",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
                 )
+
             }
-            Spacer(modifier = Modifier.height(24.dp))
             TextButton(onClick = {
-                navcontroller.navigate("Register")
+                navcontroller.popBackStack()
             }) {
                 Text(
-                    text = "¿No tienes una cuenta? Registrate",
+                    text = "Si tengo una cuenta",
                     color = Color(0xFFFF9900)
                 )
             }
 
-        }
-    }
-}
 
-@Preview
-@Composable
-fun LoginScreenPrevie() {
-    EcomerceAppTheme {
-//        LoginScreen()
+        }
     }
 
 }
