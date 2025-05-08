@@ -1,7 +1,6 @@
 package com.example.ecomerceapp
 
 
-import com.example.ecomerceapp.ui.theme.EcomerceAppTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,24 +16,37 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            EcomerceAppTheme {
-                val navController = rememberNavController()
-                val startDestiation = "Login"
 
-                LoginScreen(navController)
+                var auth= Firebase.auth
+                var currentUser= auth.currentUser
+                var startDestiation = "LoginScreen"
+                if(currentUser !=null){
+                    startDestiation = "HomeScreen"
+                }else{
+
+                    startDestiation="loginScreen"
+                }
+                val navController = rememberNavController()
+
+
+
                 NavHost(
                     navController = navController,
                     startDestination = startDestiation,
                     modifier = Modifier.fillMaxSize()
                 ) {
 
-                    composable("Login") { LoginScreen(navController) }
-                    composable("Register") { RegisterScreen(navController) }
+                    composable("LoginScreen") { LoginScreen(navController) }
+                    composable("RegisterScreen") { RegisterScreen(navController) }
                     composable("HomeScreen") { HomeScreen(navController) }
                 }
             }
@@ -42,4 +54,3 @@ class MainActivity : ComponentActivity() {
 
         }
     }
-}

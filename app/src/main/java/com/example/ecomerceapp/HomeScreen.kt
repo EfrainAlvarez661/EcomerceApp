@@ -36,13 +36,23 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
 import com.example.ecomerceapp.ui.theme.EcomerceAppTheme
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navcontroller: NavController?=null) {
+fun HomeScreen(navcontroller: NavController) {
 
+    val auth = Firebase.auth
+    var user = auth.currentUser
+    var correo = "No existe usuario"
+    if (user != null) {
+        correo = user.email.toString()
+    } else {
+        correo = "No existe usuario"
 
+    }
     Scaffold(
         topBar = {
             val scrollBehavior =
@@ -55,7 +65,7 @@ fun HomeScreen(navcontroller: NavController?=null) {
                 ),
                 title = {
                     Text(
-                        "Medium Top App Bar",
+                        "$correo",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -69,7 +79,12 @@ fun HomeScreen(navcontroller: NavController?=null) {
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = {
+                        auth.signOut()
+                        navcontroller.navigate("LoginScreen") {
+                            popUpTo(0)
+                        }
+                    }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                             contentDescription = "Localized description"
@@ -79,7 +94,9 @@ fun HomeScreen(navcontroller: NavController?=null) {
                 scrollBehavior = scrollBehavior
             )
         },
-    ) { innerPadding ->Column(modifier = Modifier.padding(innerPadding)) {
+    ) { innerPadding ->
+        Column(modifier = Modifier.padding(innerPadding)) {
+
         Text(text = "Promociones", modifier = Modifier.padding(top = 16.dp, bottom = 16.dp, start = 16.dp))
         val listaurls=listOf(
             "https://img.freepik.com/psd-premium/etiqueta-roja-super-oferta_658787-247.jpg",
@@ -117,13 +134,4 @@ fun CardPromo(url: String) {
     }
 
 
-}
-
-@Preview
-@Composable
-fun PreviewHomeScreen(
-
-) {
-    EcomerceAppTheme {
-        HomeScreen()}
 }
